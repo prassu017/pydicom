@@ -662,10 +662,11 @@ class TestApplyColorLUT:
         with pytest.raises(ValueError, match=msg):
             apply_color_lut(ds.pixel_array, ds)
 
-    def test_no_palette_color(self):
-        """Test that an unequal LUT lengths raise an exception."""
+    @pytest.mark.parametrize("colour", ["Red", "Green", "Blue"])
+    def test_no_palette_color(self, colour):
+        """Test that a missing LUT data element raises an exception."""
         ds = dcmread(PAL_08_256_0_16_1F)
-        del ds.RedPaletteColorLookupTableData
+        delattr(ds, f"{colour}PaletteColorLookupTableData")
         msg = r"No suitable Palette Color Lookup Table Module found"
         with pytest.raises(ValueError, match=msg):
             apply_color_lut(ds.pixel_array, ds)

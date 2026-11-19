@@ -92,6 +92,8 @@ Fixes
 * Fixed codify generating invalid Python for standard data elements without keywords.
 * Fixed :func:`~pydicom.valuerep.format_number_as_ds` returning a 17 character string
   when rounding adds a digit before the decimal point, such as ``9.999999999999998``.
+* Fixed :func:`~pydicom.pixels.apply_color_lut` raising ``AttributeError`` instead of
+  ``ValueError`` when only some of the palette color LUT data elements are present (:issue:`2433`).
 
 
 Enhancements

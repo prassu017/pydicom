@@ -160,7 +160,8 @@ def apply_color_lut(
     dtype = np.dtype(f"<u{byte_depth}")
 
     luts: list[np.ndarray] = []
-    if "RedPaletteColorLookupTableData" in ds:
+    rgb = ("Red", "Green", "Blue")
+    if all(f"{c}PaletteColorLookupTableData" in ds for c in rgb):
         # LUT Data is described by PS3.3, C.7.6.3.1.6
         r_lut = cast(bytes, ds.RedPaletteColorLookupTableData)
         g_lut = cast(bytes, ds.GreenPaletteColorLookupTableData)
@@ -177,7 +178,7 @@ def apply_color_lut(
             for lut_bytes in (r_lut, g_lut, b_lut, a_lut)
             if lut_bytes
         )
-    elif "SegmentedRedPaletteColorLookupTableData" in ds:
+    elif all(f"Segmented{c}PaletteColorLookupTableData" in ds for c in rgb):
         # Segmented LUT Data is described by PS3.3, C.7.9.2
         r_lut = cast(bytes, ds.SegmentedRedPaletteColorLookupTableData)
         g_lut = cast(bytes, ds.SegmentedGreenPaletteColorLookupTableData)
